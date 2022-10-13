@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
 import SearchResults from "../components/SearchResults";
-import { API_KEY, CONTEXT_KEY } from '../Keys';
 import Response from "../Response";
 
 function Search({ results }) {
@@ -36,9 +35,11 @@ export async function getServerSideProps(context) {
   // After the ? in the url
   
   // https://developers.google.com/custom-search/v1/using_rest
-  const data =useDummyData ? Response : await fetch(
-    `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CONTEXT_KEY}&q=${context.query.term}&start=${startIndex}`
-  ).then((response) => response.json());
+  const data = useDummyData
+    ? Response
+    : await fetch(
+        `https://www.googleapis.com/customsearch/v1?key=${process.env.REACT_APP_API_KEY}&cx=${process.env.REACT_APP_CONTEXT_KEY}&q=${context.query.term}&start=${startIndex}`
+      ).then((response) => response.json());
 
 
   // after server-side render pass results to client
